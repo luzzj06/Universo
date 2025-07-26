@@ -11,6 +11,7 @@
       height: 100%;
       overflow: hidden;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #000; /* fundo base */
       color: #fff;
     }
 
@@ -18,8 +19,11 @@
       position: fixed;
       top: 0;
       left: 0;
+      width: 100vw;
+      height: 100vh;
       display: block;
       z-index: 0;
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
     }
 
     .container {
@@ -164,8 +168,8 @@
 
   <div class="date-section">
     <h2>25/06/2023 – O Início</h2>
-    <p>O dia que tudo começou e o céu brilhou diferente pra nós.</p>
-    <img src="foto1.jpg" alt="Nós duas">
+    <p>O dia em que nossas estrelas se alinharam.</p>
+    <img src="foto1.jpg" alt="Nós duas" />
   </div>
 
   <footer>Feito com amor para nós duas 💖</footer>
@@ -209,44 +213,40 @@
 
   iniciarContador();
 
-  // Estrelas animadas no canvas
+  // Fundo animado com estrelas
   const canvas = document.getElementById("stars");
   const ctx = canvas.getContext("2d");
-
-  let stars = [];
-  const numStars = 200;
+  let width, height;
 
   function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
   }
+
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
 
-  for (let i = 0; i < numStars; i++) {
-    stars.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      radius: Math.random() * 1.2,
-      speed: Math.random() * 0.3 + 0.05
-    });
-  }
+  const stars = Array.from({ length: 200 }, () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    radius: Math.random() * 1.2,
+    speed: Math.random() * 0.5 + 0.2
+  }));
 
   function animateStars() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#fff";
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = "#ffffff";
 
-    stars.forEach(star => {
+    for (let star of stars) {
       ctx.beginPath();
-      ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
       ctx.fill();
-
       star.y += star.speed;
-      if (star.y > canvas.height) {
+      if (star.y > height) {
         star.y = 0;
-        star.x = Math.random() * canvas.width;
+        star.x = Math.random() * width;
       }
-    });
+    }
 
     requestAnimationFrame(animateStars);
   }
@@ -256,3 +256,4 @@
 
 </body>
 </html>
+
