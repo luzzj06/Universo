@@ -26,6 +26,7 @@
       background-color: rgba(255, 255, 255, 0.05);
       border-radius: 12px;
       backdrop-filter: blur(10px);
+      display: none;
     }
     .message {
       position: absolute;
@@ -47,19 +48,69 @@
       font-size: 1.1em;
       line-height: 1.6;
     }
+    #lockscreen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: #1b2735;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+    #lockscreen input {
+      padding: 10px;
+      font-size: 1.2em;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      text-align: center;
+    }
+    #lockscreen button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #ffb6b9;
+      border: none;
+      font-size: 1em;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    #lockscreen p {
+      font-size: 1.2em;
+      color: #ffb6b9;
+    }
   </style>
 </head>
 <body>
+  <div id="lockscreen">
+    <p>🧩 Sobre o que a gente conversou na nossa primeira conversa?</p>
+    <input type="password" id="puzzleAnswer" placeholder="Digite aqui...">
+    <button onclick="checkAnswer()">Entrar</button>
+  </div>
+
   <canvas id="sky"></canvas>
   <div class="message" id="tooltip"></div>
 
-  <h1>Constelações de Nós Dois</h1>
-
-  <div class="container">
+  <h1 id="mainTitle" style="display:none;">Constelações de Nós Dois</h1>
+  <div class="container" id="mainContainer">
     <p>Gab, essa página é uma mistura de universo, sentimento e código. Cada estrela que pisca aqui tem algo nosso escondido. Passe o mouse e descubra o que o céu quer contar hoje. 🌌</p>
   </div>
 
   <script>
+    function checkAnswer() {
+      const input = document.getElementById("puzzleAnswer").value.trim().toLowerCase();
+      const correctAnswer = "the last of us";
+      if (input === correctAnswer) {
+        document.getElementById("lockscreen").style.display = "none";
+        document.getElementById("mainTitle").style.display = "block";
+        document.getElementById("mainContainer").style.display = "block";
+      } else {
+        alert("Hmm... não é bem isso. Tenta lembrar o jogo que você AMA 💭🎮");
+      }
+    }
+
     const canvas = document.getElementById("sky");
     const ctx = canvas.getContext("2d");
     const tooltip = document.getElementById("tooltip");
@@ -77,7 +128,6 @@
       message: null
     }));
 
-    // Adiciona alguns easter eggs especiais
     const easterEggs = [
       {
         x: canvas.width * 0.3,
