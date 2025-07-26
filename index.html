@@ -2,63 +2,123 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Constelações de Nós Dois</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nosso Amor nas Estrelas - Juliana & Gabriela</title>
   <style>
-    body {
-      margin: 0;
+    /* Reset */
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       overflow: hidden;
       background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #fff;
     }
     canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      display: block;
     }
+
+    /* Container com vidro fosco */
     .container {
       position: relative;
       z-index: 10;
       max-width: 800px;
-      margin: 60px auto;
-      padding: 20px;
-      background-color: rgba(255, 255, 255, 0.05);
+      margin: 60px auto 40px auto;
+      padding: 20px 30px;
+      background-color: rgba(255 255 255 / 0.05);
       border-radius: 12px;
       backdrop-filter: blur(10px);
-      display: none;
+      box-shadow: 0 0 30px rgba(255 182 185, 0.4);
+      overflow-y: auto;
+      max-height: 80vh;
+      display: none; /* começa escondido, só aparece após senha */
     }
-    .message {
-      position: absolute;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 10px;
-      border-radius: 8px;
-      max-width: 250px;
-      font-size: 14px;
-      pointer-events: none;
-      display: none;
-    }
-    h1 {
-      text-align: center;
-      margin-top: 80px;
+
+    /* Texto e títulos */
+    h1, header h1 {
       font-size: 2.5em;
+      text-align: center;
       color: #ffb6b9;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px #ffb6b9;
     }
-    p {
+    header p, .container p, .date-section p {
       font-size: 1.1em;
-      line-height: 1.6;
+      line-height: 1.6em;
+      color: #eee;
+      text-shadow: 0 0 5px #0008;
     }
+    header {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #ffb6b9;
+      text-shadow: 0 0 8px #ffb6b9;
+    }
+
+    /* Data e contador */
+    #contador {
+      font-size: 1.8em;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #ffb6b9;
+      text-shadow: 0 0 6px #ff7f8f;
+    }
+
+    /* Seções de datas */
+    .date-section {
+      margin-bottom: 40px;
+      animation: fadeIn 1.5s ease-in-out;
+      border-left: 3px solid #ff7f8f;
+      padding-left: 12px;
+    }
+    .date-section h2 {
+      font-size: 1.6em;
+      margin-bottom: 8px;
+      color: #ffa6ac;
+      text-shadow: 0 0 4px #ff7f8f;
+    }
+    .date-section img {
+      width: 100%;
+      max-width: 280px;
+      border-radius: 16px;
+      margin-top: 12px;
+      box-shadow: 0 4px 12px rgba(255 182 185 / 0.7);
+      display: block;
+      user-select: none;
+      cursor: default;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 10px;
+      padding: 25px 10px;
+      text-align: center;
+      font-size: 1.2em;
+      color: #ffb6b9;
+      text-shadow: 0 0 10px #ffb6b9;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    /* Lockscreen */
     #lockscreen {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       background-color: #1b2735;
-      color: #fff;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 100;
+      color: #ffb6b9;
+      text-align: center;
+      padding: 20px;
     }
     #lockscreen input {
       padding: 10px;
@@ -67,138 +127,104 @@
       border: none;
       border-radius: 8px;
       text-align: center;
+      width: 180px;
+      max-width: 80vw;
     }
     #lockscreen button {
       margin-top: 15px;
-      padding: 10px 20px;
+      padding: 10px 30px;
       background-color: #ffb6b9;
       border: none;
-      font-size: 1em;
+      font-size: 1.1em;
       cursor: pointer;
       border-radius: 8px;
+      color: #1b2735;
+      font-weight: 700;
+      transition: background-color 0.3s ease;
     }
-    #lockscreen p {
-      font-size: 1.2em;
+    #lockscreen button:hover {
+      background-color: #ffa6ac;
+    }
+
+    /* Tooltip para estrelas */
+    .message {
+      position: fixed;
+      background: rgba(0,0,0,0.75);
+      padding: 8px 14px;
+      border-radius: 8px;
+      max-width: 280px;
+      font-size: 14px;
+      pointer-events: none;
       color: #ffb6b9;
+      text-shadow: 0 0 5px #ff7f8f;
+      display: none;
+      z-index: 101;
+      user-select: none;
+    }
+
+    /* Áudio barra superior */
+    .audio-bar {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #f8d8d7;
+      border-radius: 30px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      padding: 8px 16px;
+      z-index: 102;
+    }
+
+    .audio-bar span {
+      margin-right: 10px;
+      font-size: 14px;
+      color: #6b4c4c;
+    }
+
+    .audio-bar audio {
+      width: 200px;
+      outline: none;
+    }
+
+    /* Animação fadeIn */
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    /* Responsivo - ajustar container para telas pequenas */
+    @media(max-width: 480px) {
+      .container {
+        margin: 40px 10px 20px 10px;
+        padding: 15px 20px;
+      }
+      h1, header h1 {
+        font-size: 1.8em;
+      }
+      #contador {
+        font-size: 1.4em;
+      }
+      .date-section h2 {
+        font-size: 1.2em;
+      }
+      .date-section img {
+        max-width: 100%;
+      }
+      .audio-bar audio {
+        width: 140px;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="lockscreen">
-    <p>🧩 Sobre o que a gente conversou na nossa primeira conversa?</p>
-    <input type="password" id="puzzleAnswer" placeholder="Digite aqui...">
-    <button onclick="checkAnswer()">Entrar</button>
-  </div>
 
-  <canvas id="sky"></canvas>
-  <div class="message" id="tooltip"></div>
+  <!-- Audio player -->
+  <div class="audio-bar" style="z-index:103;">
+    <span>♡ now playing:</span>
+    <audio controls>
+      <source src="musica.mp3" type="audio/mpeg" />
+      Seu navegador não suporta áudio.
+    </audio>
 
-  <h1 id="mainTitle" style="display:none;">Constelações de Nós Dois</h1>
-  <div class="container" id="mainContainer">
-    <p>Gab, essa página é uma mistura de universo, sentimento e código. Cada estrela que pisca aqui tem algo nosso escondido. Passe o mouse e descubra o que o céu quer contar hoje. 🌌</p>
-  </div>
-
-  <script>
-    function checkAnswer() {
-      const input = document.getElementById("puzzleAnswer").value.trim().toLowerCase();
-      const correctAnswer = "the last of us";
-      if (input === correctAnswer) {
-        document.getElementById("lockscreen").style.display = "none";
-        document.getElementById("mainTitle").style.display = "block";
-        document.getElementById("mainContainer").style.display = "block";
-      } else {
-        alert("Hmm... não é bem isso. Tenta lembrar o jogo que você AMA 💭🎮");
-      }
-    }
-
-    const canvas = document.getElementById("sky");
-    const ctx = canvas.getContext("2d");
-    const tooltip = document.getElementById("tooltip");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const stars = Array.from({ length: 200 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      radius: Math.random() * 1.5,
-      alpha: Math.random(),
-      dx: (Math.random() - 0.5) * 0.2,
-      dy: (Math.random() - 0.5) * 0.2,
-      easter: false,
-      message: null
-    }));
-
-    const easterEggs = [
-      {
-        x: canvas.width * 0.3,
-        y: canvas.height * 0.4,
-        message: "Essa estrela brilha como você quando fala de Arduino."
-      },
-      {
-        x: canvas.width * 0.6,
-        y: canvas.height * 0.5,
-        message: "Tatuagem da Ellie... você lembra? Eu nunca esqueço."
-      },
-      {
-        x: canvas.width * 0.75,
-        y: canvas.height * 0.3,
-        message: "Se essa estrela fosse um jogo, eu escolheria jogar ao teu lado."
-      },
-      {
-        x: canvas.width * 0.5,
-        y: canvas.height * 0.2,
-        message: "Naquela noite da sinuca... o caos virou começo."
-      },
-      {
-        x: canvas.width * 0.4,
-        y: canvas.height * 0.65,
-        message: "Você me deu tomatinhos e levou meu coração."
-      }
-    ];
-
-    easterEggs.forEach(egg => {
-      stars.push({
-        x: egg.x,
-        y: egg.y,
-        radius: 3,
-        alpha: 1,
-        dx: 0,
-        dy: 0,
-        easter: true,
-        message: egg.message
-      });
-    });
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      stars.forEach(star => {
-        star.x += star.dx;
-        star.y += star.dy;
-
-        if (star.x < 0 || star.x > canvas.width) star.dx *= -1;
-        if (star.y < 0 || star.y > canvas.height) star.dy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
-        ctx.fill();
-      });
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    canvas.addEventListener("mousemove", (e) => {
-      const found = stars.find(star => star.easter && Math.hypot(e.clientX - star.x, e.clientY - star.y) < 10);
-      if (found) {
-        tooltip.style.display = "block";
-        tooltip.textContent = found.message;
-        tooltip.style.left = `${e.clientX + 10}px`;
-        tooltip.style.top = `${e.clientY + 10}px`;
-      } else {
-        tooltip.style.display = "none";
-      }
-    });
-  </script>
-</body>
-</html>
