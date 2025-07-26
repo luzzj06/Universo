@@ -5,20 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nosso Amor nas Estrelas - Juliana & Gabriela</title>
   <style>
-    body, html {
-      margin: 0; padding: 0; height: 100%;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
       overflow: hidden;
-      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #fff;
     }
+
     canvas {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
+      top: 0;
+      left: 0;
       display: block;
+      z-index: 0;
     }
 
     .container {
@@ -36,81 +37,58 @@
       display: none;
     }
 
-    h1, header h1 {
-      font-size: 2.5em;
+    header, h1 {
       text-align: center;
       color: #ffb6b9;
-      margin-bottom: 10px;
       text-shadow: 0 0 10px #ffb6b9;
-    }
-    header p, .container p, .date-section p {
-      font-size: 1.1em;
-      line-height: 1.6em;
-      color: #eee;
-      text-shadow: 0 0 5px #0008;
-    }
-    header {
-      margin-bottom: 20px;
-      text-align: center;
     }
 
     #contador {
       font-size: 1.8em;
-      font-weight: 600;
       text-align: center;
       margin-bottom: 30px;
       color: #ffb6b9;
-      text-shadow: 0 0 6px #ff7f8f;
     }
 
     .date-section {
       margin-bottom: 40px;
-      animation: fadeIn 1.5s ease-in-out;
       border-left: 3px solid #ff7f8f;
       padding-left: 12px;
     }
+
     .date-section h2 {
       font-size: 1.6em;
-      margin-bottom: 8px;
       color: #ffa6ac;
-      text-shadow: 0 0 4px #ff7f8f;
     }
+
     .date-section img {
       width: 100%;
       max-width: 280px;
       border-radius: 16px;
       margin-top: 12px;
       box-shadow: 0 4px 12px rgba(255,182,185,0.7);
-      display: block;
-      user-select: none;
-      cursor: default;
     }
 
     footer {
-      margin-top: 10px;
-      padding: 25px 10px;
       text-align: center;
+      padding: 25px 10px;
       font-size: 1.2em;
       color: #ffb6b9;
-      text-shadow: 0 0 10px #ffb6b9;
-      font-weight: 600;
-      user-select: none;
     }
 
     #lockscreen {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background-color: #1b2735;
+      background-color: rgba(27, 39, 53, 0.95);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 100;
       color: #ffb6b9;
-      text-align: center;
-      padding: 20px;
     }
+
     #lockscreen input {
       padding: 10px;
       font-size: 1.2em;
@@ -118,9 +96,8 @@
       border: none;
       border-radius: 8px;
       text-align: center;
-      width: 180px;
-      max-width: 80vw;
     }
+
     #lockscreen button {
       margin-top: 15px;
       padding: 10px 30px;
@@ -131,10 +108,6 @@
       border-radius: 8px;
       color: #1b2735;
       font-weight: 700;
-      transition: background-color 0.3s ease;
-    }
-    #lockscreen button:hover {
-      background-color: #ffa6ac;
     }
 
     .audio-bar {
@@ -161,112 +134,125 @@
       width: 200px;
       outline: none;
     }
-
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(30px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-
-    @media(max-width: 480px) {
-      .container {
-        margin: 40px 10px 20px 10px;
-        padding: 15px 20px;
-      }
-      h1, header h1 {
-        font-size: 1.8em;
-      }
-      #contador {
-        font-size: 1.4em;
-      }
-      .date-section h2 {
-        font-size: 1.2em;
-      }
-      .date-section img {
-        max-width: 100%;
-      }
-      .audio-bar audio {
-        width: 140px;
-      }
-    }
   </style>
 </head>
 <body>
 
-  <!-- Canvas (estrelas pode ser adicionado futuramente) -->
-  <canvas id="stars"></canvas>
+<canvas id="stars"></canvas>
 
-  <!-- Player de música -->
-  <div class="audio-bar">
-    <span>♡ now playing:</span>
-    <audio controls>
-      <source src="musica.mp3" type="audio/mpeg" />
-      Seu navegador não suporta áudio.
-    </audio>
+<div class="audio-bar">
+  <span>♡ now playing:</span>
+  <audio controls>
+    <source src="musica.mp3" type="audio/mpeg" />
+    Seu navegador não suporta áudio.
+  </audio>
+</div>
+
+<div id="lockscreen">
+  <h1>Digite a senha para entrar</h1>
+  <input type="password" id="senha" placeholder="Senha..." />
+  <button onclick="verificarSenha()">Entrar</button>
+</div>
+
+<div class="container" id="conteudo">
+  <header>
+    <h1>Nosso Amor nas Estrelas</h1>
+    <p>Juliana & Gabriela</p>
+  </header>
+
+  <div id="contador"></div>
+
+  <div class="date-section">
+    <h2>25/06/2023 – O Início</h2>
+    <p>O dia que tudo começou e o céu brilhou diferente pra nós.</p>
+    <img src="foto1.jpg" alt="Nós duas">
   </div>
 
-  <!-- Tela de bloqueio -->
-  <div id="lockscreen">
-    <h1>Digite a senha para entrar</h1>
-    <input type="password" id="senha" placeholder="Senha..." />
-    <button onclick="verificarSenha()">Entrar</button>
-  </div>
+  <footer>Feito com amor para nós duas 💖</footer>
+</div>
 
-  <!-- Conteúdo principal -->
-  <div class="container" id="conteudo">
-    <header>
-      <h1>Nosso Amor nas Estrelas</h1>
-      <p>Juliana & Gabriela</p>
-    </header>
+<script>
+  function verificarSenha() {
+    const senha = document.getElementById("senha").value;
+    if (senha === "25/06") {
+      document.getElementById("lockscreen").style.display = "none";
+      document.getElementById("conteudo").style.display = "block";
+    } else {
+      alert("Senha incorreta. Tente novamente.");
+    }
+  }
 
-    <div id="contador"></div>
+  function iniciarContador() {
+    const dataInicial = new Date("2023-06-25T00:00:00");
+    const contador = document.getElementById("contador");
 
-    <div class="date-section">
-      <h2>O começo de tudo – 25/06/2023</h2>
-      <p>O dia em que nossas almas se reconheceram. Desde então, o universo sorri pra gente.</p>
-      <img src="foto1.jpg" alt="Foto especial" />
-    </div>
+    setInterval(() => {
+      const agora = new Date();
+      const diff = agora - dataInicial;
 
-    <footer>Feito com amor para nós duas 💖</footer>
-  </div>
+      const anos = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+      const meses = Math.floor(diff / (1000 * 60 * 60 * 24 * 30)) % 12;
+      const dias = Math.floor(diff / (1000 * 60 * 60 * 24)) % 30;
+      const horas = Math.floor(diff / (1000 * 60 * 60)) % 24;
+      const minutos = Math.floor(diff / (1000 * 60)) % 60;
+      const segundos = Math.floor(diff / 1000) % 60;
 
-  <script>
-    function verificarSenha() {
-      const senha = document.getElementById("senha").value;
-      if (senha === "25/06") {
-        document.getElementById("lockscreen").style.display = "none";
-        document.getElementById("conteudo").style.display = "block";
-      } else {
-        alert("Senha incorreta. Tente novamente.");
+      contador.textContent =
+        `${anos} ano${anos !== 1 ? 's' : ''}, ` +
+        `${meses} mês${meses !== 1 ? 'es' : ''}, ` +
+        `${dias} dia${dias !== 1 ? 's' : ''}, ` +
+        `${horas.toString().padStart(2, '0')}h : ` +
+        `${minutos.toString().padStart(2, '0')}m : ` +
+        `${segundos.toString().padStart(2, '0')}s`;
+    }, 1000);
+  }
+
+  iniciarContador();
+
+  // Estrelas animadas no canvas
+  const canvas = document.getElementById("stars");
+  const ctx = canvas.getContext("2d");
+
+  let stars = [];
+  const numStars = 200;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  for (let i = 0; i < numStars; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 1.2,
+      speed: Math.random() * 0.3 + 0.05
+    });
+  }
+
+  function animateStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#fff";
+
+    stars.forEach(star => {
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+      ctx.fill();
+
+      star.y += star.speed;
+      if (star.y > canvas.height) {
+        star.y = 0;
+        star.x = Math.random() * canvas.width;
       }
-    }
+    });
 
-    function iniciarContador() {
-      const dataInicial = new Date("2023-06-25T00:00:00");
-      const contador = document.getElementById("contador");
+    requestAnimationFrame(animateStars);
+  }
 
-      setInterval(() => {
-        const agora = new Date();
-        const diff = agora - dataInicial;
+  animateStars();
+</script>
 
-        const anos = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
-        const meses = Math.floor(diff / (1000 * 60 * 60 * 24 * 30)) % 12;
-        const dias = Math.floor(diff / (1000 * 60 * 60 * 24)) % 30;
-        const horas = Math.floor(diff / (1000 * 60 * 60)) % 24;
-        const minutos = Math.floor(diff / (1000 * 60)) % 60;
-        const segundos = Math.floor(diff / 1000) % 60;
-
-        contador.textContent =
-          `${anos} ano${anos !== 1 ? 's' : ''}, ` +
-          `${meses} mês${meses !== 1 ? 'es' : ''}, ` +
-          `${dias} dia${dias !== 1 ? 's' : ''}, ` +
-          `${horas.toString().padStart(2, '0')}h : ` +
-          `${minutos.toString().padStart(2, '0')}m : ` +
-          `${segundos.toString().padStart(2, '0')}s`;
-      }, 1000);
-    }
-
-    window.onload = iniciarContador;
-  </script>
 </body>
 </html>
-
