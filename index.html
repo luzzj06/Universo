@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Constelações de Nós Dois</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+    }
+    .message {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 8px;
+      max-width: 250px;
+      font-size: 14px;
+      pointer-events: none;
+      display: none;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 80px;
+      font-size: 2.5em;
+      color: #ffb6b9;
+    }
+    p {
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="sky"></canvas>
+  <div class="message" id="tooltip"></div>
+
+  <h1>Constelações de Nós Dois</h1>
+
+  <div class="container">
+    <p>Gab, essa página é uma mistura de universo, sentimento e código. Cada estrela que pisca aqui tem algo nosso escondido. Passe o mouse e descubra o que o céu quer contar hoje. 🌌</p>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("sky");
+    const ctx = canvas.getContext("2d");
+    const tooltip = document.getElementById("tooltip");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const stars = Array.from({ length: 200 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 1.5,
+      alpha: Math.random(),
+      dx: (Math.random() - 0.5) * 0.2,
+      dy: (Math.random() - 0.5) * 0.2,
+      easter: false,
+      message: null
+    }));
+
+    // Adiciona alguns easter eggs especiais
+    const easterEggs = [
+      {
+        x: canvas.width * 0.3,
+        y: canvas.height * 0.4,
+        message: "Essa estrela brilha como você quando fala de Arduino."
+      },
+      {
+        x: canvas.width * 0.6,
+        y: canvas.height * 0.5,
+        message: "Tatuagem da Ellie... você lembra? Eu nunca esqueço."
+      },
+      {
+        x: canvas.width * 0.75,
+        y: canvas.height * 0.3,
+        message: "Se essa estrela fosse um jogo, eu escolheria jogar ao teu lado."
+      },
+      {
+        x: canvas.width * 0.5,
+        y: canvas.height * 0.2,
+        message: "Naquela noite da sinuca... o caos virou começo."
+      },
+      {
+        x: canvas.width * 0.4,
+        y: canvas.height * 0.65,
+        message: "Você me deu tomatinhos e levou meu coração."
+      }
+    ];
+
+    easterEggs.forEach(egg => {
+      stars.push({
+        x: egg.x,
+        y: egg.y,
+        radius: 3,
+        alpha: 1,
+        dx: 0,
+        dy: 0,
+        easter: true,
+        message: egg.message
+      });
+    });
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        star.x += star.dx;
+        star.y += star.dy;
+
+        if (star.x < 0 || star.x > canvas.width) star.dx *= -1;
+        if (star.y < 0 || star.y > canvas.height) star.dy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    canvas.addEventListener("mousemove", (e) => {
+      const found = stars.find(star => star.easter && Math.hypot(e.clientX - star.x, e.clientY - star.y) < 10);
+      if (found) {
+        tooltip.style.display = "block";
+        tooltip.textContent = found.message;
+        tooltip.style.left = `${e.clientX + 10}px`;
+        tooltip.style.top = `${e.clientY + 10}px`;
+      } else {
+        tooltip.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
