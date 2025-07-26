@@ -227,4 +227,68 @@
       <source src="musica.mp3" type="audio/mpeg" />
       Seu navegador não suporta áudio.
     </audio>
+     </div> <!-- fecha audio-bar -->
+ <!-- Tela de bloqueio -->
+ <div id="lockscreen">
+   <h1>Digite a senha para entrar</h1>
+   <input type="password" id="senha" placeholder="Senha..." />
+   <button onclick="verificarSenha()">Entrar</button>
+ </div>
+
+ <!-- Container principal escondido até desbloquear -->
+ <div class="container" id="conteudo">
+   <header>
+     <h1>Nosso Amor nas Estrelas</h1>
+     <p>Juliana & Gabriela</p>
+   </header>
+
+   <div id="contador"></div>
+
+   <!-- Exemplo de seção de datas -->
+   <div class="date-section">
+     <h2>Nos conhecemos</h2>
+     <p>Um dia mágico que mudou tudo.</p>
+     <img src="foto1.jpg" alt="Primeiro encontro">
+   </div>
+
+   <footer>Feito com amor para nós duas 💖</footer>
+ </div>
+
+ <script>
+   function verificarSenha() {
+     const senha = document.getElementById("senha").value;
+     if (senha === "thel4stofus") {
+       document.getElementById("lockscreen").style.display = "none";
+       document.getElementById("conteudo").style.display = "block";
+     } else {
+       alert("Senha incorreta. Tente novamente.");
+     }
+   }
+
+   function iniciarContador() {
+     const dataInicial = new Date("2023-06-12T00:00:00");
+     const contador = document.getElementById("contador");
+
+     setInterval(() => {
+       const agora = new Date();
+       const diff = agora - dataInicial;
+
+       const anos = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+       const meses = Math.floor(diff / (1000 * 60 * 60 * 24 * 30)) % 12;
+       const dias = Math.floor(diff / (1000 * 60 * 60 * 24)) % 30;
+       const horas = Math.floor(diff / (1000 * 60 * 60)) % 24;
+       const minutos = Math.floor(diff / (1000 * 60)) % 60;
+       const segundos = Math.floor(diff / 1000) % 60;
+
+       contador.textContent = 
+         `${anos} anos, ${meses} meses, ${dias} dias, ` +
+         `${horas.toString().padStart(2, '0')}h : ` +
+         `${minutos.toString().padStart(2, '0')}m : ` +
+         `${segundos.toString().padStart(2, '0')}s`;
+     }, 1000);
+   }
+
+   window.onload = iniciarContador;
+ </script>
+
 
